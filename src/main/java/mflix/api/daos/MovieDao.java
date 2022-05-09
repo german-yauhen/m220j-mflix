@@ -118,11 +118,14 @@ public class MovieDao extends AbstractMFlixDao {
      */
     public List<Document> getMoviesByCountry(String... country) {
 
-        Bson queryFilter = new Document();
-        Bson projection = new Document();
+        Bson queryFilter = Filters.all("countries", Arrays.asList(country));
+        Bson projection = Projections.include("title");
         //TODO> Ticket: Projection - implement the query and projection required by the unit test
         List<Document> movies = new ArrayList<>();
-
+        moviesCollection
+                .find(queryFilter)
+                .projection(projection)
+                .into(movies);
         return movies;
     }
 
